@@ -1,0 +1,27 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-3" style="background-color: cadetblue; height: 90vh;">
+      <div>
+        <mat-card class="m-3 p-3">
+          <form [formGroup]="todoForm">
+            <mat-form-field appearance="outline">
+              <mat-label>Write Task</mat-label>
+              <input matInput placeholder="Task Title" formControlName="item">
+              <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+              <mat-hint>Task Input</mat-hint>
+            </mat-form-field>
+            @if(!isEditEnabled)
+            {
+            <button (click)="addTask()" mat-raised-button color="primary" [disabled]="todoForm.invalid">Add</button>
+            }
+            @if(isEditEnabled)
+            {
+            <button (click)="updateTask()" mat-raised-button color="primary"
+              [disabled]="todoForm.invalid">Update</button>
+            }
+
+          </form>
+        </mat-card>
+      </div>
+    </div>
+  </div>
