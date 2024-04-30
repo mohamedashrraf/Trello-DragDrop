@@ -25,37 +25,55 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem, CdkDrag, CdkDropList }
   styleUrl: './todo.component.scss'
 })
 export class TodoComponent {
-  todoForm!:FormGroup;
+  todoForm! : FormGroup;
   tasks: Task[] = [];
   inprogress:Task[] = [];
   done:Task[] = [];
   isEditEnabled: boolean = false;
-
+  updatedIndex!:any;
 
   constructor(private fb:FormBuilder){}
-
   ngOnInit(): void {
     this.todoForm = this.fb.group({
-      item:['', Validators.required, Validators.minLength(3)]
-    })
-
+      item : ['', [Validators.required, Validators.minLength(3)]]
+    });
   }
-
 
   addTask(){
-
+    this.tasks.push({
+      Title: this.todoForm.value.item,
+      Completed: false,
+      Desctiption: ''
+    });
+    this.todoForm.reset();
   }
 
-  updateTask(){
 
+  onEditTask(task:Task,taskId:number){ //take item from list and put it in input
+    this.isEditEnabled = true;
+    this.updatedIndex = taskId;
+    this.todoForm.controls['item'].setValue(task.Title);
+  }
+  updateTask(){ //update item in input and appeat in list
+    this.isEditEnabled = false;
+    this.tasks[this.updatedIndex].Title=this.todoForm.value.item;
+    this.tasks[this.updatedIndex].Completed=false;
+    this.todoForm.reset();
+    this.updatedIndex = -1;
+  }
+
+deleteTask(taskId:number){
+    this.tasks.splice(taskId,1);
+  }
+  deleteInprogressTask(taskId:number){
+    this.inprogress.splice(taskId,1);
+  }
+  deleteDoneTask(taskId:number){
+    this.done.splice(taskId,1);
   }
 
 
-  todo = ['Get to work', 'Pick up groceries', 'Go home', 'Fall asleep'];
-
-  // done = ['Get up', 'Brush teeth', 'Take a shower', 'Check e-mail', 'Walk dog'];
-
-  drop(event: CdkDragDrop<string[]>) {
+  drop(event: CdkDragDrop<Task[]>) {  //Mat function
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
