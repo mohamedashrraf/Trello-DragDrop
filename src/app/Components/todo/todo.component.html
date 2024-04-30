@@ -33,5 +33,126 @@
         </mat-card>
       </div>
     </div>
+
+    <div class="col-md-9 mt-3">
+      <div class="cdkDropList">
+        <div class="row">
+          <div class="col-md-4">
+            <div class="example-container">
+              <h2 class="head-title">
+                To Do @if(tasks.length > 0) {
+                <span>: {{ tasks.length }}</span>
+                }
+              </h2>
+
+              <div
+                cdkDropList
+                #todoList1="cdkDropList"
+                [cdkDropListData]="tasks"
+                [cdkDropListConnectedTo]="[todoList2, todoList3]"
+                class="example-list"
+                (cdkDropListDropped)="drop($event)"
+              >
+                @for (item of tasks; track $index) {
+                <div class="example-box" cdkDrag>
+                  {{ item.Title }}
+                  <div class="box">
+                    <button
+                      mat-icon-button
+                      color="warn"
+                      (click)="deleteTask($index)"
+                    >
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                    <button
+                      mat-icon-button
+                      color="primary"
+                      (click)="onEditTask(item, $index)"
+                    >
+                      <mat-icon>edit</mat-icon>
+                    </button>
+                  </div>
+                </div>
+                }
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="example-container">
+              <h2 class="head-title">
+                In Progress @if(inprogress.length > 0) {
+                <span>: {{ inprogress.length }}</span>
+                }
+              </h2>
+
+              <div
+                cdkDropList
+                #todoList2="cdkDropList"
+                [cdkDropListData]="inprogress"
+                [cdkDropListConnectedTo]="[todoList3, todoList1]"
+                class="example-list"
+                (cdkDropListDropped)="drop($event)"
+              >
+                @for (item of inprogress; track $index) {
+                <div class="example-box" cdkDrag>
+                  {{ item.Title }}
+                  <div class="box">
+                    <button
+                      mat-icon-button
+                      color="warn"
+                      (click)="deleteInprogressTask($index)"
+                    >
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </div>
+                </div>
+                }
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="example-container">
+              <h2 class="head-title">
+                Done @if(done.length > 0) {
+                <span>: {{ done.length }}</span>
+                }
+              </h2>
+
+              <div
+                cdkDropList
+                #todoList3="cdkDropList"
+                [cdkDropListData]="done"
+                [cdkDropListConnectedTo]="[todoList1, todoList2]"
+                class="example-list"
+                (cdkDropListDropped)="drop($event)"
+              >
+                @for (item of done; track $index) {
+                <div class="example-box" cdkDrag>
+                  {{ item.Title }}
+                  <div class="box">
+                    <button
+                      mat-icon-button
+                      color="warn"
+                      (click)="deleteDoneTask($index)"
+                    >
+                      <mat-icon>delete</mat-icon>
+                    </button>
+
+                    <button mat-icon-button color="accent">
+                      <mat-icon style="-webkit-text-fill-color: green"
+                        >check_circle</mat-icon
+                      >
+                    </button>
+                  </div>
+                </div>
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
